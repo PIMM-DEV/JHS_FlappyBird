@@ -107,7 +107,7 @@ public class Parallaxer : MonoBehaviour
         Transform t = GetPoolObject();
         if (t == null) return;
         Vector3 pos = Vector3.zero;
-        pos.x = defaultSpawnPos.x;
+        pos.x = (defaultSpawnPos.x * Camera.main.aspect) / targetAspect;
         pos.y = Random.Range(ySpawnRange.min, ySpawnRange.max);
         t.position = pos;
     }
@@ -117,7 +117,7 @@ public class Parallaxer : MonoBehaviour
         Transform t = GetPoolObject();
         if (t == null) return;
         Vector3 pos = Vector3.zero;
-        pos.x = immediateSpawnPos.x;
+        pos.x = (immediateSpawnPos.x * Camera.main.aspect) / targetAspect;
         pos.y = Random.Range(ySpawnRange.min, ySpawnRange.max);
         t.position = pos;
         Spawn();
@@ -134,7 +134,7 @@ public class Parallaxer : MonoBehaviour
 
     void CheckDisposeObject(PoolObject poolObject)
     {
-        if (poolObject.transform.position.x < -defaultSpawnPos.x)
+        if (poolObject.transform.position.x < (-defaultSpawnPos.x * Camera.main.aspect) / targetAspect)
         {
             poolObject.Dispose();
             poolObject.transform.position = Vector3.one * 1000;

@@ -17,16 +17,43 @@ public class TapController : MonoBehaviour
     Quaternion downRotation;
     Quaternion forwardRotation;
 
+    GameManager game;
+
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         downRotation = Quaternion.Euler(0, 0, -90);
         forwardRotation = Quaternion.Euler(0, 0, 35);
-        
+        game = GameManager.Instance;
+    }
+
+    private void OnEnable()
+    {
+        GameManager.OnGameStarted += OnGameStarted;
+        GameManager.OnGameOverConfirmed += OnGameOverConfirmed;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnGameStarted -= OnGameStarted;
+        GameManager.OnGameOverConfirmed -= OnGameOverConfirmed;
+    }
+
+    void OnGameStarted()
+    {
+        rigidbody.velocity = Vector3.zero;
+        rigidbody.simulated = true;
+    }
+
+    void OnGameOverConfirmed()
+    {
+        transform.localPosition = startPos;
+        transform.rotation = Quaternion.identity;
     }
 
     private void Update()
     {
+        if (game.GameOver) return;
         if (Input.GetMouseButtonDown(0))
         {
             transform.rotation = forwardRotation;
@@ -41,7 +68,7 @@ public class TapController : MonoBehaviour
     {
         if (collision.gameObject.tag == "ScoreZone")
         {
-            OnPlayerScored();
+            OnPlayerScored?.Invoke();
         }
 
         if (collision.gameObject.tag == "DeadZone")

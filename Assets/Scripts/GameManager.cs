@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     bool gameOver = true;
 
     public bool GameOver { get { return gameOver; } }
+    public int Score { get { return score; } }
 
     private void Awake()
     {

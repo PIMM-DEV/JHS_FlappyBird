@@ -7,7 +7,7 @@ public class ScoreText : MonoBehaviour
 {
     Text score;
 
-    private void Start()
+    private void OnEnable()
     {
         score = GetComponent<Text>();
         score.text = "Score: " + GameManager.Instance.Score;
